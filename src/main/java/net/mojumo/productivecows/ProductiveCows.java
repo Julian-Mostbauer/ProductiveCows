@@ -30,12 +30,16 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
+
+import java.io.IOException;
+import java.nio.file.Path;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(ProductiveCows.MODID)
@@ -86,16 +90,6 @@ public class ProductiveCows {
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
 
-        CowTypeRegistry.register(
-                new CowType(
-                        ResourceLocation.fromNamespaceAndPath(MODID, "iron"),
-                        ResourceLocation.fromNamespaceAndPath(MODID, "iron_milk"),
-                        250,
-                        2400
-                )
-        );
-
-
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
@@ -125,7 +119,18 @@ public class ProductiveCows {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
     }
-
+    @SubscribeEvent
+    public void onServerAboutToStart(ServerAboutToStartEvent event) {
+        try {
+            CowTypeRegistry.loadFromJson(event.getServer().getResourceManager());
+            LOGGER.info("Loaded cow types:");
+            for (CowType type : CowTypeRegistry.all()) {
+                LOGGER.info(" - {} (material: {})", type.texture(), type.material());
+            }
+        } catch (IOException e) {
+            LOGGER.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nFailed to load cow types", e);
+        }
+    }
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
     public static class ClientModEvents {

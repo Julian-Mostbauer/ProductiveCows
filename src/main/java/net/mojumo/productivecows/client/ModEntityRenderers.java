@@ -22,12 +22,15 @@ public class ModEntityRenderers {
                 manager -> new CowRenderer(manager) {
                     @Override
                     public ResourceLocation getTextureLocation(Cow entity) {
-                        return ResourceLocation.fromNamespaceAndPath(
-                                ProductiveCows.MODID,
-                                "textures/entity/productive_cow.png"
-                        );
+                        if (entity instanceof ProductiveCowEntity productiveCow) {
+                            String texturePath = productiveCow.getCowType().texture();
+                            if (texturePath != null && !texturePath.isEmpty()) {
+                                return ResourceLocation.fromNamespaceAndPath(ProductiveCows.MODID, "textures/entity/" + texturePath + ".png");
+                            }
+                        }
+                        // Fallback to default texture
+                        return ResourceLocation.fromNamespaceAndPath(ProductiveCows.MODID, "textures/entity/default.png");
                     }
                 });
     }
 }
-
