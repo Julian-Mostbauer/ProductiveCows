@@ -1,7 +1,9 @@
 package net.mojumo.productivecows.block;
 
 import it.unimi.dsi.fastutil.ints.IntList;
+import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -57,6 +59,9 @@ public class CowSpawnerBlock extends Block {
                 return ItemInteractionResult.SUCCESS;
             }else{
                 ProductiveCows.LOGGER.info("{} has not cow that supports it", item);
+                if (player != null)
+                    player.displayClientMessage(Component.literal(item.toString() + " has not cow that supports it"), true);
+                return ItemInteractionResult.FAIL;
             }
         }
 

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "productivecows:block/cow_spawner_block"
+    }
+  }
+}
