@@ -13,8 +13,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-import static net.mojumo.productivecows.ProductiveCows.ITEMS;
-
 public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS =
             DeferredRegister.createBlocks(ProductiveCows.MODID);

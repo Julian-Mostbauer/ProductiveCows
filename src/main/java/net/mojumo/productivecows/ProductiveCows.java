@@ -12,6 +12,7 @@ import net.mojumo.productivecows.block.ModBlocks;
 import net.mojumo.productivecows.cow.CowType;
 import net.mojumo.productivecows.cow.CowTypeRegistry;
 import net.mojumo.productivecows.entity.ModEntities;
+import net.mojumo.productivecows.item.ModCreativeModeTab;
 import net.mojumo.productivecows.item.ModItems;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -38,27 +39,9 @@ public class ProductiveCows {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "productivecows";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
     // Create a Deferred Register to hold Blocks which will all be registered under the "productivecows" namespace
-    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
-    // Create a Deferred Register to hold Items which will all be registered under the "productivecows" namespace
-    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
-    // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "productivecows" namespace
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
-
-    // Creates a new Block with the id "productivecows:example_block", combining the namespace and path
-    // public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
-    // Creates a new BlockItem with the id "productivecows:example_block", combining the namespace and path
-    // public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
-
-    // Creates a new food item with the id "productivecows:example_id", nutrition 1 and saturation 2
-    // public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder().alwaysEdible().nutrition(1).saturationModifier(2f).build()));
-
-    // Creates a creative tab with the id "productivecows:example_tab" for the example item, that is placed after the combat tab
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("productivecows", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.productivecows")).withTabsBefore(CreativeModeTabs.COMBAT).icon(() -> ModItems.PRODUCTIVE_COW_EGG.get().getDefaultInstance()).displayItems((parameters, output) -> {
-        output.accept(ModItems.PRODUCTIVE_COW_EGG.get());
-        output.accept(ModBlocks.COW_SPAWNER_BLOCK.asItem());
-    }).build());
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
@@ -66,17 +49,10 @@ public class ProductiveCows {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
-        // Register the Deferred Register to the mod event bus so blocks get registered
-        BLOCKS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so items get registered
-        ITEMS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so tabs get registered
-        CREATIVE_MODE_TABS.register(modEventBus);
-
-        // Productive cows registration
         ModItems.ITEMS.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
+        ModCreativeModeTab.CREATIVE_MODE_TAB.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Productivecows) to respond directly to events.

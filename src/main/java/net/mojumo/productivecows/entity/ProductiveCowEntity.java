@@ -25,7 +25,9 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.mojumo.productivecows.ProductiveCows;
 import net.mojumo.productivecows.cow.CowType;
 import net.mojumo.productivecows.cow.CowTypeRegistry;
+
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 
 public class ProductiveCowEntity extends Cow {
@@ -76,8 +78,14 @@ public class ProductiveCowEntity extends Cow {
             MobSpawnType reason,
             @Nullable SpawnGroupData spawnData
     ) {
-        CowType randomType = CowTypeRegistry.getRandom(this.random);
-        setCowType(randomType);
+
+        if (getCowType() == null){
+            ProductiveCows.LOGGER.warn("Cow without proper type found. Will be assigned randomly.");
+            CowType randomType = CowTypeRegistry.getRandom(this.random);
+            setCowType(randomType);
+        }
+
+        ProductiveCows.LOGGER.info("After Cowtype: {}", getCowType());
         return super.finalizeSpawn(level, difficulty, reason, spawnData);
     }
 

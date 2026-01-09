@@ -22,7 +22,7 @@ public class ModEntityRenderers {
                 manager -> new CowRenderer(manager) {
                     @Override
                     public ResourceLocation getTextureLocation(Cow entity) {
-                        if (entity instanceof ProductiveCowEntity productiveCow) {
+                        if (entity instanceof ProductiveCowEntity productiveCow && productiveCow.getCowType() != null) {
                             String texturePath = productiveCow.getCowType().texture();
                             if (texturePath != null && !texturePath.isEmpty()) {
                                 return ResourceLocation.fromNamespaceAndPath(ProductiveCows.MODID, "textures/entity/" + texturePath + ".png");
