@@ -12,8 +12,10 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AirItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.FireworkExplosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -44,8 +46,23 @@ public class CowSpawnerBlock extends Block {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        ProductiveCows.LOGGER.info("Itemstack: {}", itemStack);
-        if (itemStack.isEmpty()) return ItemInteractionResult.FAIL;
+        if (player == null) return ItemInteractionResult.FAIL;
+
+        if (interactionHand == InteractionHand.OFF_HAND && player.getMainHandItem().isEmpty()) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+
+        ProductiveCows.LOGGER.info("Itemstack: item:{}, isempty:{}", itemStack.getItem(), itemStack.isEmpty());
+
+        if (!player.isCreative()) {
+            player.displayClientMessage(Component.literal("You can only use this block in creative mode"), true);
+            return ItemInteractionResult.FAIL;
+        }
+
+        if (itemStack.getItem().equals(Items.AIR)) {
+            player.displayClientMessage(Component.literal("Try using a supported item on this block"), true);
+            return ItemInteractionResult.FAIL;
+        }
 
         if (!level.isClientSide) {
             ProductiveCowEntity cow = new ProductiveCowEntity(ModEntities.PRODUCTIVE_COW.get(), level);
@@ -57,14 +74,13 @@ public class CowSpawnerBlock extends Block {
                 cow.setCowType(type);
                 level.addFreshEntity(cow);
                 return ItemInteractionResult.SUCCESS;
-            }else{
+            } else {
                 ProductiveCows.LOGGER.info("{} has not cow that supports it", item);
-                if (player != null)
-                    player.displayClientMessage(Component.literal(item.toString() + " has not cow that supports it"), true);
+                player.displayClientMessage(Component.literal(item.toString() + " has not cow that supports it"), true);
                 return ItemInteractionResult.FAIL;
             }
         }
 
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return ItemInteractionResult.SUCCESS;
     }
 }
