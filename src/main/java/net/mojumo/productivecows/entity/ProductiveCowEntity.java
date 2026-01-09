@@ -76,7 +76,8 @@ public class ProductiveCowEntity extends Cow {
             MobSpawnType reason,
             @Nullable SpawnGroupData spawnData
     ) {
-        setCowType(CowTypeRegistry.all().iterator().next());
+        CowType randomType = CowTypeRegistry.getRandom(this.random);
+        setCowType(randomType);
         return super.finalizeSpawn(level, difficulty, reason, spawnData);
     }
 

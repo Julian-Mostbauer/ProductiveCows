@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.mojumo.productivecows.block.ModBlocks;
 import net.mojumo.productivecows.cow.CowType;
 import net.mojumo.productivecows.cow.CowTypeRegistry;
 import net.mojumo.productivecows.entity.ModEntities;
@@ -66,6 +67,7 @@ public class ProductiveCows {
     // Creates a creative tab with the id "productivecows:example_tab" for the example item, that is placed after the combat tab
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("productivecows", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.productivecows")).withTabsBefore(CreativeModeTabs.COMBAT).icon(() -> ModItems.PRODUCTIVE_COW_EGG.get().getDefaultInstance()).displayItems((parameters, output) -> {
         output.accept(ModItems.PRODUCTIVE_COW_EGG.get());
+        output.accept(ModBlocks.COW_SPAWNER_BLOCK_ITEM.get());
     }).build());
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
@@ -84,6 +86,7 @@ public class ProductiveCows {
         // Productive cows registration
         ModItems.ITEMS.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
+        ModBlocks.BLOCK.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Productivecows) to respond directly to events.

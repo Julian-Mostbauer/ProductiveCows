@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.RandomSource;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 
@@ -30,6 +31,20 @@ public class CowTypeRegistry {
         }
     }
 
-    public static CowType get(ResourceLocation id) { return TYPES.get(id); }
-    public static Collection<CowType> all() { return TYPES.values(); }
+    public static CowType get(ResourceLocation id) {
+        return TYPES.get(id);
+    }
+
+    public static Collection<CowType> all() {
+        return TYPES.values();
+    }
+
+    public static int size() {
+        return TYPES.size();
+    }
+
+    public static CowType getRandom(RandomSource random) {
+        int index = random.nextInt(TYPES.size());
+        return TYPES.values().stream().skip(index).findFirst().orElse(null);
+    }
 }
