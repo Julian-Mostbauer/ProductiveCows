@@ -15,7 +15,7 @@ public class ModFluids {
 
     private static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, ProductiveCows.MODID);
     private static final DeferredRegister<Block> FLUID_BLOCKS = DeferredRegister.create(Registries.BLOCK, ProductiveCows.MODID);
-    private static final DeferredRegister<Item> BUCKET_ITEMS = DeferredRegister.create(Registries.ITEM, ProductiveCows.MODID);
+    public static final DeferredRegister<Item> BUCKET_ITEMS = DeferredRegister.create(Registries.ITEM, ProductiveCows.MODID);
     private static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, ProductiveCows.MODID);
 
     private static final FluidRegisterer PC_MILK = new FluidRegisterer("pc_milk", 0xFFFFFF);
@@ -38,7 +38,7 @@ public class ModFluids {
 
             fluidType = FLUID_TYPES.register(name + "_fluid_type", () -> new PCFluidType(
                             () -> fluidBlock.get(),
-                            FluidType.Properties.create().canSwim(true)
+                            FluidType.Properties.create().canSwim(true).viscosity(0).canDrown(true).canConvertToSource(true)
                     )
             );
 
@@ -63,7 +63,7 @@ public class ModFluids {
     }
 
     public static class Helpers {
-        public static int getColorMinLuminance(int color) {
+        public static int colMinLum(int color) {
             int r = color & 0xFF, g = (color >> 8) & 0xFF, b = (color >> 16) & 0xFF;
             double lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255d;
             if (lum >= 0.3) return color;

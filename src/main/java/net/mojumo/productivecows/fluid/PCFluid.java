@@ -78,7 +78,7 @@ public class PCFluid extends Fluid {
 
     @Override
     public float getHeight(FluidState state, BlockGetter world, BlockPos pos) {
-        return 0;
+        return 0.5f;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class PCFluid extends Fluid {
 
     @Override
     public int getAmount(FluidState state) {
-        return 0;
+        return 1;
     }
 
     @Override

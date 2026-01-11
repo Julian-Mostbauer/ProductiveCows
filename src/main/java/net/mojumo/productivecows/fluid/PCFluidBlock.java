@@ -36,7 +36,7 @@ public class PCFluidBlock extends Block {
 
     public PCFluidBlock(int color) {
         super(Properties.of().mapColor(MapColor.WATER).replaceable().pushReaction(PushReaction.DESTROY).liquid().air());
-        this.color = ModFluids.Helpers.getColorMinLuminance(color);
+        this.color = ModFluids.Helpers.colMinLum(color);
     }
     public int getColor() {
         return color;

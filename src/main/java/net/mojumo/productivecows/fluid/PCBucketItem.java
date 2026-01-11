@@ -12,11 +12,12 @@ public class PCBucketItem extends BucketItem {
 
     public PCBucketItem(PCFluid fluid, int color, Properties settings) {
         super(fluid, settings.stacksTo(1).craftRemainder(Items.BUCKET));
-        this.color = ModFluids.Helpers.getColorMinLuminance(color);
+        this.color = ModFluids.Helpers.colMinLum(color);
     }
 
     @Override
     public Component getName(ItemStack stack) {
         return Component.translatable(this.getDescriptionId(stack)).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(color)));
     }
+
 }
