@@ -12,6 +12,7 @@ import net.mojumo.productivecows.block.ModBlocks;
 import net.mojumo.productivecows.cow.CowType;
 import net.mojumo.productivecows.cow.CowTypeRegistry;
 import net.mojumo.productivecows.entity.ModEntities;
+import net.mojumo.productivecows.fluid.ModFluids;
 import net.mojumo.productivecows.item.ModCreativeModeTab;
 import net.mojumo.productivecows.item.ModItems;
 import net.neoforged.api.distmarker.Dist;
@@ -53,6 +54,7 @@ public class ProductiveCows {
         ModEntities.ENTITIES.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModCreativeModeTab.CREATIVE_MODE_TAB.register(modEventBus);
+        ModFluids.registerAll(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Productivecows) to respond directly to events.
