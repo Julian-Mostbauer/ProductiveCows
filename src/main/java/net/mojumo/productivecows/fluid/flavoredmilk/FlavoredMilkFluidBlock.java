@@ -9,7 +9,7 @@ import net.mojumo.productivecows.fluid.ModFluids;
 public class FlavoredMilkFluidBlock extends LiquidBlock {
     public FlavoredMilkFluidBlock() {
         super(ModFluids.FLAVORED_MILK_FLUID_SOURCE.get(), Properties.of()
-                .mapColor(MapColor.COLOR_LIGHT_GREEN)
+                .mapColor(MapColor.TERRACOTTA_WHITE)
                 .replaceable()
                 .noCollission()
                 .strength(100.0F)
