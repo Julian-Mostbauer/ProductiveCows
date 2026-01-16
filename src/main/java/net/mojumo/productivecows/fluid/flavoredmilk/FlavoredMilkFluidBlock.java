@@ -2,6 +2,8 @@ package net.mojumo.productivecows.fluid.flavoredmilk;
 
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.mojumo.productivecows.fluid.ModFluids;

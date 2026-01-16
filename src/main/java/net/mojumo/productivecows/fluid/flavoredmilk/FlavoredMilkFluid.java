@@ -3,10 +3,13 @@ package net.mojumo.productivecows.fluid.flavoredmilk;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.mojumo.productivecows.fluid.ModFluids;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+
+import java.util.Random;
 
 public abstract class FlavoredMilkFluid extends BaseFlowingFluid {
     public static final Properties PROPERTIES = new Properties(
@@ -15,8 +18,14 @@ public abstract class FlavoredMilkFluid extends BaseFlowingFluid {
             ModFluids.FLAVORED_MILK_FLUID_SOURCE
     ).bucket(ModFluids.FLAVORED_MILK_FLUID_BUCKET).block(ModFluids.FLAVORED_MILK_FLUID_BLOCK);
 
+//     public static final IntegerProperty COLOR = IntegerProperty.create("color", 0, 16777215);
+
     protected FlavoredMilkFluid(Properties properties) {
         super(properties);
+    }
+
+    public static int getRandomColor() {
+        return new Random().nextInt(16777216);
     }
 
     @Override
@@ -48,6 +57,7 @@ public abstract class FlavoredMilkFluid extends BaseFlowingFluid {
         protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> pBuilder) {
             super.createFluidStateDefinition(pBuilder);
             pBuilder.add(LEVEL);
+            //pBuilder.add(COLOR);
         }
 
         @Override
@@ -64,6 +74,12 @@ public abstract class FlavoredMilkFluid extends BaseFlowingFluid {
     public static class Source extends FlavoredMilkFluid {
         public Source() {
             super(PROPERTIES);
+        }
+
+        @Override
+        protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> pBuilder) {
+            super.createFluidStateDefinition(pBuilder);
+            //pBuilder.add(COLOR);
         }
 
         @Override
