@@ -1,0 +1,6 @@
+{
+  "parent": "neoforge:item/bucket",
+  "textures": {
+    "layer0": "productivecows:item/flavored_milk_fluid_bucket"
+  }
+}

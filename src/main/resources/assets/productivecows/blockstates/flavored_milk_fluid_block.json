@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "level=0": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=1": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=2": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=3": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=4": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=5": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=6": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=7": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=8": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=9": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=10": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=11": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=12": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=13": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=14": { "model": "productivecows:block/flavored_milk_fluid_block" },
+    "level=15": { "model": "productivecows:block/flavored_milk_fluid_block" }
+  }
+}

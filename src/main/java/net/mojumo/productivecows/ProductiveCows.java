@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
@@ -24,6 +25,8 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
@@ -48,6 +51,7 @@ public class ProductiveCows {
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public ProductiveCows(IEventBus modEventBus, ModContainer modContainer) {
         // Register the commonSetup method for modloading
+        modEventBus.addListener(this::registerFluidClientExtensions);
         modEventBus.addListener(this::commonSetup);
 
         ModItems.ITEMS.register(modEventBus);
@@ -111,5 +115,28 @@ public class ProductiveCows {
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
+    }
+
+    private void registerFluidClientExtensions(RegisterClientExtensionsEvent event) {
+        event.registerFluidType(
+                new IClientFluidTypeExtensions() {
+                    @Override
+                    public ResourceLocation getStillTexture() {
+                        return ResourceLocation.fromNamespaceAndPath(
+                                ProductiveCows.MODID,
+                                "block/flavored_milk_fluid_still"
+                        );
+                    }
+
+                    @Override
+                    public ResourceLocation getFlowingTexture() {
+                        return ResourceLocation.fromNamespaceAndPath(
+                                ProductiveCows.MODID,
+                                "block/flavored_milk_fluid_flow"
+                        );
+                    }
+                },
+                ModFluids.FLAVORED_MILK_FLUID_TYPE.get()
+        );
     }
 }
