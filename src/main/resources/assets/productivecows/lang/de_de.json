@@ -1,0 +1,8 @@
+{
+  "itemGroup.productivecows": "Produktive Kühe",
+  "block.productivecows.cow_spawner_block": "Kuh Spawner Block",
+  "item.productivecows.example_item": "Example Item",
+  "item.productivecows.productive_cow_spawn_egg": "Produktive-Kuh-Spawn-Ei",
+  "creativetab.productive_cows.productive_cows": "Produktive Kühe",
+  "item.productivecows.flavored_milk_fluid_bucket": "Milch mit Geschmack Eimer"
+}

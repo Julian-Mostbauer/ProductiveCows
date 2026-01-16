@@ -1,9 +1,10 @@
-package net.mojumo.productivecows.fluid;
+package net.mojumo.productivecows.fluid.flavoredmilk;
 
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.mojumo.productivecows.fluid.ModFluids;
 
 public class FlavoredMilkFluidBlock extends LiquidBlock {
     public FlavoredMilkFluidBlock() {

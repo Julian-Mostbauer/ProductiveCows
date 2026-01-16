@@ -8,6 +8,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.Fluid;
 import net.mojumo.productivecows.ProductiveCows;
+import net.mojumo.productivecows.fluid.flavoredmilk.FlavoredMilkFluid;
+import net.mojumo.productivecows.fluid.flavoredmilk.FlavoredMilkFluidBlock;
+import net.mojumo.productivecows.fluid.flavoredmilk.FlavoredMilkFluidType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -20,6 +23,8 @@ public class ModFluids {
     private static final DeferredRegister<Block> FLUID_BLOCKS = DeferredRegister.create(Registries.BLOCK, ProductiveCows.MODID);
     public static final DeferredRegister<Item> BUCKET_ITEMS = DeferredRegister.create(Registries.ITEM, ProductiveCows.MODID);
     private static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, ProductiveCows.MODID);
+
+
 
     public static final DeferredHolder<FluidType, FluidType> FLAVORED_MILK_FLUID_TYPE = FLUID_TYPES.register("flavored_milk_fluid_type",
             FlavoredMilkFluidType::new);

@@ -13,6 +13,7 @@ import net.mojumo.productivecows.block.ModBlocks;
 import net.mojumo.productivecows.cow.CowType;
 import net.mojumo.productivecows.cow.CowTypeRegistry;
 import net.mojumo.productivecows.entity.ModEntities;
+import net.mojumo.productivecows.fluid.FluidClientExtension;
 import net.mojumo.productivecows.fluid.ModFluids;
 import net.mojumo.productivecows.item.ModCreativeModeTab;
 import net.mojumo.productivecows.item.ModItems;
@@ -51,7 +52,7 @@ public class ProductiveCows {
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public ProductiveCows(IEventBus modEventBus, ModContainer modContainer) {
         // Register the commonSetup method for modloading
-        modEventBus.addListener(this::registerFluidClientExtensions);
+        modEventBus.addListener(FluidClientExtension::registerFluidClientExtensions);
         modEventBus.addListener(this::commonSetup);
 
         ModItems.ITEMS.register(modEventBus);
@@ -115,28 +116,5 @@ public class ProductiveCows {
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
-    }
-
-    private void registerFluidClientExtensions(RegisterClientExtensionsEvent event) {
-        event.registerFluidType(
-                new IClientFluidTypeExtensions() {
-                    @Override
-                    public ResourceLocation getStillTexture() {
-                        return ResourceLocation.fromNamespaceAndPath(
-                                ProductiveCows.MODID,
-                                "block/flavored_milk_fluid_still"
-                        );
-                    }
-
-                    @Override
-                    public ResourceLocation getFlowingTexture() {
-                        return ResourceLocation.fromNamespaceAndPath(
-                                ProductiveCows.MODID,
-                                "block/flavored_milk_fluid_flow"
-                        );
-                    }
-                },
-                ModFluids.FLAVORED_MILK_FLUID_TYPE.get()
-        );
     }
 }

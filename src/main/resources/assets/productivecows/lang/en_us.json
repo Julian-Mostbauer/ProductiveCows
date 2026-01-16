@@ -3,6 +3,6 @@
   "block.productivecows.cow_spawner_block": "Cow Spawner Block",
   "item.productivecows.example_item": "Example Item",
   "item.productivecows.productive_cow_spawn_egg": "Productive Cow Spawn Egg",
-  "creativetab.productive_cows.productive_cows": "Productive Cows"
-
+  "creativetab.productive_cows.productive_cows": "Productive Cows",
+  "item.productivecows.flavored_milk_fluid_bucket": "Flavored Milk Bucket"
 }

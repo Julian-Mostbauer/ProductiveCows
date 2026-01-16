@@ -1,5 +1,5 @@
 {
-  "parent": "neoforge:item/bucket",
+  "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "productivecows:item/flavored_milk_fluid_bucket"
   }

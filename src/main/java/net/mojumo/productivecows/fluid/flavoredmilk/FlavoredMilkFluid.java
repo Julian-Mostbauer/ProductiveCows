@@ -1,10 +1,11 @@
-package net.mojumo.productivecows.fluid;
+package net.mojumo.productivecows.fluid.flavoredmilk;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.mojumo.productivecows.fluid.ModFluids;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 
 public abstract class FlavoredMilkFluid extends BaseFlowingFluid {
