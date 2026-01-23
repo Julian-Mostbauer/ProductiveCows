@@ -4,11 +4,15 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.mojumo.productivecows.fluid.ModFluids;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public abstract class FlavoredMilkFluid extends BaseFlowingFluid {
@@ -18,14 +22,17 @@ public abstract class FlavoredMilkFluid extends BaseFlowingFluid {
             ModFluids.FLAVORED_MILK_FLUID_SOURCE
     ).bucket(ModFluids.FLAVORED_MILK_FLUID_BUCKET).block(ModFluids.FLAVORED_MILK_FLUID_BLOCK);
 
-//     public static final IntegerProperty COLOR = IntegerProperty.create("color", 0, 16777215);
+    public static final IntegerProperty COLOR_RED = IntegerProperty.create("color_red", 0, 8);
+    public static final IntegerProperty COLOR_GREEN = IntegerProperty.create("color_green", 0, 8);
+    public static final IntegerProperty COLOR_BLUE = IntegerProperty.create("color_blue", 0, 8);
+    public static final List<IntegerProperty> COLOR_PROPERTIES = List.of(COLOR_RED, COLOR_GREEN, COLOR_BLUE);
 
     protected FlavoredMilkFluid(Properties properties) {
         super(properties);
     }
 
-    public static int getRandomColor() {
-        return new Random().nextInt(16777216);
+    public static int getColor(int r, int g, int b) {
+        return (32 * r) << 16 | (32 * g) << 8 | (32 * b);
     }
 
     @Override
@@ -57,7 +64,7 @@ public abstract class FlavoredMilkFluid extends BaseFlowingFluid {
         protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> pBuilder) {
             super.createFluidStateDefinition(pBuilder);
             pBuilder.add(LEVEL);
-            //pBuilder.add(COLOR);
+            COLOR_PROPERTIES.forEach(pBuilder::add);
         }
 
         @Override
@@ -79,7 +86,7 @@ public abstract class FlavoredMilkFluid extends BaseFlowingFluid {
         @Override
         protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> pBuilder) {
             super.createFluidStateDefinition(pBuilder);
-            //pBuilder.add(COLOR);
+            COLOR_PROPERTIES.forEach(pBuilder::add);
         }
 
         @Override

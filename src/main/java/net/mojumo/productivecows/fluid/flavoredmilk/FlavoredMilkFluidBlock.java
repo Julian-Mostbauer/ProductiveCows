@@ -8,6 +8,8 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.mojumo.productivecows.fluid.ModFluids;
 
+import java.util.Random;
+
 public class FlavoredMilkFluidBlock extends LiquidBlock {
     public FlavoredMilkFluidBlock() {
         super(ModFluids.FLAVORED_MILK_FLUID_SOURCE.get(), Properties.of()
@@ -20,5 +22,13 @@ public class FlavoredMilkFluidBlock extends LiquidBlock {
                 .liquid()
                 .sound(SoundType.EMPTY)
         );
+    }
+    private static Random random = new Random();
+    @Override
+    public FluidState getFluidState(BlockState pState) {
+        return super.getFluidState(pState)
+                .setValue(FlavoredMilkFluid.COLOR_RED, random.nextInt(0, 8))
+                .setValue(FlavoredMilkFluid.COLOR_GREEN, random.nextInt(0, 8))
+                .setValue(FlavoredMilkFluid.COLOR_BLUE, random.nextInt(0, 8));
     }
 }
