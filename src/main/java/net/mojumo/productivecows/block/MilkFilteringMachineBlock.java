@@ -69,25 +69,43 @@ public class MilkFilteringMachineBlock extends Block implements EntityBlock {
     }
 
     private void checkAndFormMultiblock(Level level, BlockPos pos) {
-        // Simplified detection: checks 2x2x2 area starting from pos as minimum
-        for (int x = 0; x < 2; x++) {
-            for (int y = 0; y < 2; y++) {
-                for (int z = 0; z < 2; z++) {
-                    BlockPos p = pos.offset(x, y, z);
-                    if (!level.getBlockState(p).is(this)) return;
+        // Attempt to find the "bottom-front-left" corner of a potential 2x2x2 cube
+        // We check all 8 possible 2x2x2 cubes that could contain the newly placed block at 'pos'
+        for (int dx = -1; dx <= 0; dx++) {
+            for (int dy = -1; dy <= 0; dy++) {
+                for (int dz = -1; dz <= 0; dz++) {
+                    BlockPos origin = pos.offset(dx, dy, dz);
+                    if (isFullCube(level, origin)) {
+                        formCube(level, origin);
+                        return; // Found and formed one, we're done
+                    }
                 }
             }
         }
+    }
 
-        // If all are MilkFilteringMachineBlock, form the multiblock
+    private boolean isFullCube(Level level, BlockPos origin) {
         for (int x = 0; x < 2; x++) {
             for (int y = 0; y < 2; y++) {
                 for (int z = 0; z < 2; z++) {
-                    BlockPos p = pos.offset(x, y, z);
+                    if (!level.getBlockState(origin.offset(x, y, z)).is(this)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    private void formCube(Level level, BlockPos origin) {
+        ProductiveCows.LOGGER.info("Forming multiblock at {}", origin);
+        for (int x = 0; x < 2; x++) {
+            for (int y = 0; y < 2; y++) {
+                for (int z = 0; z < 2; z++) {
+                    BlockPos p = origin.offset(x, y, z);
                     BlockEntity be = level.getBlockEntity(p);
                     if (be instanceof MilkFilteringMachineBlockEntity machineBe) {
-                        ProductiveCows.LOGGER.info("Formed multiblock");
-                        machineBe.setMaster(pos);
+                        machineBe.setMaster(origin);
                     }
                 }
             }
