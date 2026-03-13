@@ -10,6 +10,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -37,6 +39,22 @@ public class ProductiveCowEntity extends Cow {
 
     public ProductiveCowEntity(EntityType<? extends Cow> type, Level level) {
         super(type, level);
+    }
+
+    @Override
+    public ProductiveCowEntity getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
+        ProductiveCowEntity baby = ModEntities.PRODUCTIVE_COW.get().create(level);
+        if (baby != null && otherParent instanceof ProductiveCowEntity otherProductiveParent) {
+            CowType resultType = CowTypeRegistry.getBreedingResult(this.getCowType(), otherProductiveParent.getCowType());
+            
+            if (resultType != null) {
+                baby.setCowType(resultType);
+            } else {
+                // Default to one of the parents' types if no specific breeding result exists
+                baby.setCowType(this.random.nextBoolean() ? this.getCowType() : otherProductiveParent.getCowType());
+            }
+        }
+        return baby;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

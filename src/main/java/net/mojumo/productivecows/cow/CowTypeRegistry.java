@@ -1,5 +1,7 @@
 package net.mojumo.productivecows.cow;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.resources.ResourceLocation;
@@ -11,14 +13,17 @@ import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CowTypeRegistry {
     private static final Map<ResourceLocation, CowType> TYPES = new HashMap<>();
 
     public static void loadFromJson(ResourceManager resourceManager) throws IOException {
+        TYPES.clear();
         // List all JSON files in the data/productivecows/cow_types directory
         var resources = resourceManager.listResources("cow_types", path -> path.getPath().endsWith(".json"));
         for (var entry : resources.entrySet()) {
@@ -27,7 +32,16 @@ public class CowTypeRegistry {
                 ResourceLocation id = ResourceLocation.parse(obj.get("id").getAsString());
                 ResourceLocation material = ResourceLocation.parse(obj.get("material").getAsString());
                 String texture = obj.get("texture").getAsString();
-                TYPES.put(id, new CowType(id, material, texture));
+                
+                List<ResourceLocation> parents = new ArrayList<>();
+                if (obj.has("parents")) {
+                    JsonArray parentsArray = obj.getAsJsonArray("parents");
+                    for (JsonElement element : parentsArray) {
+                        parents.add(ResourceLocation.parse(element.getAsString()));
+                    }
+                }
+                
+                TYPES.put(id, new CowType(id, material, texture, parents));
             }
         }
     }
@@ -54,5 +68,20 @@ public class CowTypeRegistry {
                 .stream()
                 .filter(c -> c.material().toString().equals(item.toString()))
                 .findFirst().orElse(null);
+    }
+
+    public static CowType getBreedingResult(CowType parent1, CowType parent2) {
+        if (parent1 == null || parent2 == null) return null;
+        
+        for (CowType type : TYPES.values()) {
+            List<ResourceLocation> parents = type.parents();
+            if (parents.size() == 2) {
+                if ((parents.get(0).equals(parent1.id()) && parents.get(1).equals(parent2.id())) ||
+                    (parents.get(0).equals(parent2.id()) && parents.get(1).equals(parent1.id()))) {
+                    return type;
+                }
+            }
+        }
+        return null;
     }
 }
