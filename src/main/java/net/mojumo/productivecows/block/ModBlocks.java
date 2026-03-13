@@ -9,6 +9,7 @@ import net.mojumo.productivecows.ProductiveCows;
 import net.mojumo.productivecows.item.ModItems;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 

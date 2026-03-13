@@ -10,6 +10,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.mojumo.productivecows.block.ModBlocks;
+import net.mojumo.productivecows.block.entity.ModBlockEntities;
 import net.mojumo.productivecows.cow.CowType;
 import net.mojumo.productivecows.cow.CowTypeRegistry;
 import net.mojumo.productivecows.entity.ModEntities;
@@ -58,6 +59,7 @@ public class ProductiveCows {
         ModItems.ITEMS.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
+        ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModCreativeModeTab.CREATIVE_MODE_TAB.register(modEventBus);
         ModFluids.registerAll(modEventBus);
 
