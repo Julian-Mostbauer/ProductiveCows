@@ -1,6 +1,7 @@
 package net.mojumo.productivecows.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -11,8 +12,8 @@ public class MilkFilteringMachineBlockEntity extends BlockEntity {
     private boolean isMaster = false;
     private BlockPos masterPos = null;
 
-    public MilkFilteringMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        super(type, pos, state);
+    public MilkFilteringMachineBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.MILK_FILTERING_MACHINE_BE.get(), pos, state);
     }
 
     public void setMaster(BlockPos masterPos) {
@@ -30,8 +31,8 @@ public class MilkFilteringMachineBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
         tag.putBoolean("IsMaster", isMaster);
         if (masterPos != null) {
             tag.putLong("MasterPos", masterPos.asLong());
@@ -39,8 +40,8 @@ public class MilkFilteringMachineBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag) {
-        super.loadAdditional(tag);
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
         isMaster = tag.getBoolean("IsMaster");
         if (tag.contains("MasterPos")) {
             masterPos = BlockPos.of(tag.getLong("MasterPos"));
