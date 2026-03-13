@@ -1,0 +1,9 @@
+{
+  "id": "productivecows:redstone",
+  "material": "minecraft:redstone",
+  "texture": "redstone",
+  "parents": [
+    "productivecows:iron",
+    "productivecows:red_cow"
+  ]
+}
