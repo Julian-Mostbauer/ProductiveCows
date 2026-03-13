@@ -5,6 +5,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.mojumo.productivecows.ProductiveCows;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.Level;
@@ -16,9 +17,30 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.Direction;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.BlockHitResult;
+
 public class MilkFilteringMachineBlock extends Block implements EntityBlock {
     public MilkFilteringMachineBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (level.isClientSide) return InteractionResult.SUCCESS;
+
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof MilkFilteringMachineBlockEntity machineBe) {
+            BlockPos masterPos = machineBe.getMasterPos();
+            if (masterPos != null) {
+                player.displayClientMessage(Component.literal("Multiblock formed! Master at: " + masterPos.toShortString()), true);
+            } else {
+                player.displayClientMessage(Component.literal("Not part of a multiblock."), true);
+            }
+        }
+        return InteractionResult.CONSUME;
     }
 
     @Nullable
@@ -64,6 +86,7 @@ public class MilkFilteringMachineBlock extends Block implements EntityBlock {
                     BlockPos p = pos.offset(x, y, z);
                     BlockEntity be = level.getBlockEntity(p);
                     if (be instanceof MilkFilteringMachineBlockEntity machineBe) {
+                        ProductiveCows.LOGGER.info("Formed multiblock");
                         machineBe.setMaster(pos);
                     }
                 }
