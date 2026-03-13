@@ -27,6 +27,8 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -38,6 +40,10 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.mojumo.productivecows.screen.ModMenuTypes;
+import net.mojumo.productivecows.screen.MilkFilteringMachineScreen;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(ProductiveCows.MODID)
@@ -55,6 +61,7 @@ public class ProductiveCows {
         // Register the commonSetup method for modloading
         modEventBus.addListener(FluidClientExtension::registerFluidClientExtensions);
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::registerCapabilities);
 
         ModItems.ITEMS.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
@@ -62,6 +69,7 @@ public class ProductiveCows {
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModCreativeModeTab.CREATIVE_MODE_TAB.register(modEventBus);
         ModFluids.registerAll(modEventBus);
+        ModMenuTypes.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Productivecows) to respond directly to events.
@@ -73,6 +81,19 @@ public class ProductiveCows {
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+    }
+
+    private void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.MILK_FILTERING_MACHINE_BE.get(),
+                (be, side) -> be.getFluidHandler()
+        );
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.MILK_FILTERING_MACHINE_BE.get(),
+                (be, side) -> be.getItemHandler()
+        );
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -110,13 +131,18 @@ public class ProductiveCows {
         }
     }
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+        }
+
+        @SubscribeEvent
+        public static void registerScreens(RegisterMenuScreensEvent event) {
+            event.register(ModMenuTypes.MILK_FILTERING_MACHINE_MENU.get(), MilkFilteringMachineScreen::new);
         }
     }
 }

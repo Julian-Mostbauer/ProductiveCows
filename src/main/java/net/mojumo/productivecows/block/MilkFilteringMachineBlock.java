@@ -17,10 +17,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.Direction;
 
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import org.jetbrains.annotations.Nullable;
 
 public class MilkFilteringMachineBlock extends Block implements EntityBlock {
     public MilkFilteringMachineBlock(Properties properties) {
@@ -35,7 +42,17 @@ public class MilkFilteringMachineBlock extends Block implements EntityBlock {
         if (be instanceof MilkFilteringMachineBlockEntity machineBe) {
             BlockPos masterPos = machineBe.getMasterPos();
             if (masterPos != null) {
-                player.displayClientMessage(Component.literal("Multiblock formed! Master at: " + masterPos.toShortString()), true);
+                BlockEntity masterBe = level.getBlockEntity(masterPos);
+                if (masterBe instanceof MilkFilteringMachineBlockEntity master) {
+                    // Try to interact with bucket
+                    if (FluidUtil.interactWithFluidHandler(player, InteractionHand.MAIN_HAND, master.getFluidHandler())) {
+                        return InteractionResult.SUCCESS;
+                    }
+
+                    // Open UI
+                    player.openMenu(master, masterPos);
+                    return InteractionResult.SUCCESS;
+                }
             } else {
                 player.displayClientMessage(Component.literal("Not part of a multiblock."), true);
             }
